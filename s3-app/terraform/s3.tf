@@ -73,3 +73,30 @@ resource "aws_s3_bucket_ownership_controls" "portal_bucket_ownership" {
     object_ownership = "BucketOwnerPreferred"
   }
 }
+
+# ---------------------------------------------
+# パブリックアクセスブロックの設定
+# ---------------------------------------------
+resource "aws_s3_bucket_public_access_block" "portal_bucket_public_access_block" {
+  bucket = aws_s3_bucket.portal_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# ---------------------------------------------
+# CORS設定の追加
+# ---------------------------------------------
+resource "aws_s3_bucket_cors_configuration" "portal_bucket_cors" {
+  bucket = aws_s3_bucket.portal_bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "PUT", "POST", "DELETE"]
+    allowed_origins = ["https://*.netlify.app"]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3600
+  }
+}

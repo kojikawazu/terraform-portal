@@ -37,7 +37,16 @@ resource "aws_iam_policy" "s3_access_policy" {
       {
         Effect   = "Allow",
         Action   = ["s3:GetObject", "s3:PutObject"],
-        Resource = "arn:aws:s3:::${var.project}-${var.environment}-bucket/*"
+        Resource = "arn:aws:s3:::${var.project}-${var.environment}-bucket"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ],
+        Resource = "arn:aws:s3:::${var.project}-${var.environment}-bucket/portal/*"
       }
     ]
   })
