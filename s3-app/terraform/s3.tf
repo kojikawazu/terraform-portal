@@ -57,8 +57,16 @@ resource "aws_s3_bucket_policy" "portal_bucket_policy" {
         Principal = {
           AWS = "arn:aws:iam::${var.account_id}:role/${var.project}-${var.environment}-bk-access-role"
         },
-        Action   = ["s3:GetObject", "s3:PutObject"],
-        Resource = "arn:aws:s3:::${var.project}-${var.environment}-bucket/*"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListBucket",
+          "s3:DeleteObject"
+        ],
+        Resource = [
+          "arn:aws:s3:::${var.project}-${var.environment}-bucket/*",
+          "arn:aws:s3:::${var.project}-${var.environment}-bucket"
+        ]
       }
     ]
   })
